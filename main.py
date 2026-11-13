@@ -36,6 +36,9 @@ def listItems():
 
 @app.post("/fruits")
 def createItem(item: Fruit):
+    if item.id == 0:
+        item.id = len(items);
+    
     updated_items = [*items, item];
 
     saveItem(updated_items);

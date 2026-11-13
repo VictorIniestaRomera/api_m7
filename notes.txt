@@ -1,3 +1,4 @@
 To start the application write 'uvicorn main:app --reload' in the tarminal.
+To open this into lan so WinForms detects it, write 'python -m uvicorn main:app --reload --host 127.0.0.1 --port 8001' in the terminal.
 To test the application search 'http://127.0.0.1:8000/...' on a browser.
 To post or use the api simply write 'http://127.0.0.1:8000/docs' on a browser.

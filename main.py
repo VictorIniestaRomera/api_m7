@@ -11,7 +11,7 @@ class Fruit(BaseModel):
     id: int;
     name: str;
     price: float;
-    quantity: int;
+    stock: int;
 
 def loadItems() -> list[Fruit]:
     contents = STORAGE_PATH.read_text(encoding="utf-8");
@@ -34,7 +34,7 @@ def sameName(item: Fruit) -> bool:
 
 def exists(id: int) -> bool:
     for fruit in items:
-        if fruit.id is id:
+        if fruit.id == id:
             return True;
 
     return False;
@@ -52,7 +52,7 @@ def listItems():
 @app.post("/add")
 def createItem(item: Fruit) -> Fruit:
     if sameName(item):
-            raise HTTPException(status_code=400, detail="Item ya existente");
+        raise HTTPException(status_code=400, detail="Item ya existente");
 
     if item.id == 0:
         used_ids = {fruit.id for fruit in items};
@@ -81,7 +81,7 @@ def updateItem(id: int, item: Fruit):
 
             return item;
             
-        raise HTTPException(status_code=404, detail="No encontrado");
+    raise HTTPException(status_code=404, detail="No encontrado");
         
 @app.delete("/fruits/{id}")
 def deleteItem(id: int):

@@ -31,7 +31,6 @@ def sameName(item: Fruit) -> bool:
 
     return False;
 
-
 def exists(id: int) -> bool:
     for fruit in items:
         if fruit.id == id:

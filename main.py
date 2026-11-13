@@ -31,6 +31,7 @@ def sameName(item: Fruit) -> bool:
 
     return False;
 
+
 def exists(id: int) -> bool:
     for fruit in items:
         if fruit.id is id:
@@ -49,12 +50,17 @@ def listItems():
     return items;
 
 @app.post("/add")
-def createItem(item: Fruit) -> Fruit | None:
-    if item.id == 0:
-        item.id = len(items);
-
+def createItem(item: Fruit) -> Fruit:
     if sameName(item):
-        raise HTTPException(status_code=400, detail="Item ya existente");
+            raise HTTPException(status_code=400, detail="Item ya existente");
+
+    if item.id == 0:
+        used_ids = {fruit.id for fruit in items};
+
+        item.id = 0;
+
+        while item.id in used_ids:
+            item.id += 1;
     
     updated_items = [*items, item];
 

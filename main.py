@@ -57,8 +57,6 @@ def createItem(item: Fruit) -> Fruit:
     if item.id == 0:
         used_ids = {fruit.id for fruit in items};
 
-        item.id = 0;
-
         while item.id in used_ids:
             item.id += 1;
     

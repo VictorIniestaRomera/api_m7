@@ -24,6 +24,20 @@ def loadItems() -> list[Fruit]:
 def saveItem(updated_items: list[Fruit]) -> None:
     STORAGE_PATH.write_text(json.dumps([item.model_dump() for item in updated_items], indent=2), encoding="utf-8");
 
+def sameName(item: Fruit) -> bool:
+    for fruit in items:
+        if fruit.name == item.name:
+            return True;
+
+    return False;
+
+def exists(id: int) -> bool:
+    for fruit in items:
+        if fruit.id is id:
+            return True;
+
+    return False;
+
 items = loadItems();
 
 @app.get("/")
@@ -34,10 +48,13 @@ def introduction():
 def listItems():
     return items;
 
-@app.post("/fruits")
-def createItem(item: Fruit):
+@app.post("/add")
+def createItem(item: Fruit) -> Fruit | None:
     if item.id == 0:
         item.id = len(items);
+
+    if sameName(item):
+        raise HTTPException(status_code=400, detail="Item ya existente");
     
     updated_items = [*items, item];
 
@@ -64,6 +81,9 @@ def updateItem(id: int, item: Fruit):
         
 @app.delete("/fruits/{id}")
 def deleteItem(id: int):
+    if not exists(id):
+        raise HTTPException(status_code=404, detail="No encontrado");
+
     updated_items = [it for it in items if it.id != id];
 
     saveItem(updated_items);

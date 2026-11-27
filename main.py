@@ -54,6 +54,7 @@ def createItem(item: Fruit) -> Fruit:
         raise HTTPException(status_code=400, detail="Item ya existente");
 
     if item.id == -1:
+        item.id = 0;
         used_ids = {fruit.id for fruit in items};
 
         while item.id in used_ids:
